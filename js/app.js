@@ -1,5 +1,8 @@
+//Global Variables
+var gameLives = 3;
+
 // Enemies our player must avoid
-var Enemy = function (x, y, speed) {
+var Enemy = function(x, y, speed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
@@ -8,14 +11,14 @@ var Enemy = function (x, y, speed) {
     this.sprite = 'images/enemy-bug.png';
     this.x = x;
     this.y = y;
-    this.speed = Math.floor(Math.random() * 100) + 5;
+    this.speed = Math.floor(Math.random() * 125) + 15;
     this.height = 77;
     this.width = 99;
 };
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function (dt) {
+Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
@@ -25,40 +28,41 @@ Enemy.prototype.update = function (dt) {
         this.x = -70;
     }
 };
+//resets enemies upon game reset
+Enemy.prototype.bugReset = function() {
+    for (var i = 0; i < allEnemies.length; i++) {
+        allEnemies[i] = -100;
+        this.speed[i]++
+    }
 
-
-
-Enemy.prototype.bugReset = function () {
-    for (var i = 0; i < allEnemies.length; i++)
-        allEnemies[i] = -200;
 }
 
 // Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function () {
+Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
-var Player = function () {
+var Player = function() {
     this.sprite = 'images/char-boy.png';
     this.x = 200;
     this.y = 400;
     this.speed;
 };
 
-Player.prototype.update = function (dt) {
+Player.prototype.update = function(dt) {
     checkCollisions();
 };
 
-Player.prototype.render = function () {
+Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 
 
-Player.prototype.handleInput = function (key) {
+Player.prototype.handleInput = function(key) {
     if (key === "left" && this.x > 0) {
         this.x -= 100;
         console.log("left");
@@ -77,25 +81,33 @@ Player.prototype.handleInput = function (key) {
     }
 }
 
+Player.prototype.lives = function() {
+    gameLives = gameLives - 1;
+    if (gameLives < 1) {
+        console.log("Game over try again");
+    }
+};
+
+//reset function to return char-boy back to begining of board
+var reset = function() {
+    player.x = 200;
+    player.y = 380;
+}
+
 function checkCollisions() {
-    //reset function to return char-boy back to begining of board
-    var reset = function () {
-            player.x = 200;
-            player.y = 380;
-        }
-        //checks to see if the player hits an enemy and initalizes reset
+
+    //checks to see if the player hits an enemy and initalizes reset
     for (var i = 0; i < allEnemies.length; i++) {
         if ((allEnemies[i].x) <= player.x + 30 &&
             (allEnemies[i].x + 30) >= (player.x) &&
             (allEnemies[i].y) <= player.y + 30 &&
             (allEnemies[i].y + 30) >= (player.y)) {
             reset();
-            alert('Opps Try again');
+            Player.prototype.lives();
         }
     }
     //checks to see if player reaches water and resets player initial position
-    if (player.y <= -30) {
-        alert("you win");
+    if (player.y <= -25) {
         reset();
     }
 }
@@ -104,9 +116,9 @@ function checkCollisions() {
 // Place the player object in a variable called player
 
 var enemy1 = new Enemy(-100, 60, 400);
-var enemy2 = new Enemy(200, 180, 400);
+var enemy2 = new Enemy(-150, 180, 400);
 var enemy3 = new Enemy(-100, 240, 400);
-var enemy4 = new Enemy(160, 145, 400);
+var enemy4 = new Enemy(-100, 145, 400);
 var allEnemies = [enemy1, enemy2, enemy3, enemy4];
 
 
@@ -114,7 +126,7 @@ var player = new Player(200, 400, 1);
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function (e) {
+document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',
         38: 'up',
