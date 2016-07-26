@@ -81,19 +81,15 @@ Player.prototype.render = function() {
 Player.prototype.handleInput = function(key) {
     if (key === "left" && this.x > 0) {
         this.x -= 100;
-        console.log("left");
     }
     if (key === "up" && this.y > 0) {
         this.y -= 85;
-        console.log("up");
     }
     if (key === "right" && this.x < 400) {
         this.x += 100;
-        console.log("right");
     }
     if (key === "down" && this.y < 400) {
         this.y += 85;
-        console.log("down");
     }
 };
 
