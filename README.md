@@ -13,4 +13,4 @@ Left Arrow: Moves character left
 Right Arrow: Moves character right
 
 Running Game:
-In order to run game user must clone or download arcade-game folder, and open index.html in your browser window no need to install anything game runs right on your favorite browser.
+In order to run game, you can go to this link https://j8298c.github.io/arcade-game/ or user must clone or download arcade-game folder, and open index.html in your browser window no need to install anything game runs right on your favorite browser.
