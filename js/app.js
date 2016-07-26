@@ -31,12 +31,10 @@ Enemy.prototype.update = function(dt) {
 //resets enemies upon game reset
 Enemy.prototype.bugReset = function() {
     for (var i = 0; i < allEnemies.length; i++) {
-        allEnemies[i] = -100;
-        this.speed[i]++
+        this.speed[i]++;
     }
 
-}
-
+};
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -53,14 +51,32 @@ var Player = function() {
 };
 
 Player.prototype.update = function(dt) {
-    checkCollisions();
+    //Default reset location for player
+    var reset = function() {
+            player.x = 200;
+            player.y = 400;
+        }
+        //checks for collision between player and enemy
+        //if player collides with enemy resets player to default loc
+        //also deducts a life from player 
+    for (var i = 0; i < allEnemies.length; i++) {
+        if ((allEnemies[i].x) <= player.x + 30 &&
+            (allEnemies[i].x + 30) >= (player.x) &&
+            (allEnemies[i].y) <= player.y + 30 &&
+            (allEnemies[i].y + 30) >= (player.y)) {
+            reset();
+            this.lives();
+        }
+    }
+    //if player reaches water resets player to default location
+    if (player.y <= -25) {
+        reset();
+    }
 };
 
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
-
-
 
 Player.prototype.handleInput = function(key) {
     if (key === "left" && this.x > 0) {
@@ -79,7 +95,7 @@ Player.prototype.handleInput = function(key) {
         this.y += 85;
         console.log("down");
     }
-}
+};
 
 Player.prototype.lives = function() {
     gameLives = gameLives - 1;
@@ -88,38 +104,14 @@ Player.prototype.lives = function() {
     }
 };
 
-//reset function to return char-boy back to begining of board
-var reset = function() {
-    player.x = 200;
-    player.y = 380;
-}
-
-function checkCollisions() {
-
-    //checks to see if the player hits an enemy and initalizes reset
-    for (var i = 0; i < allEnemies.length; i++) {
-        if ((allEnemies[i].x) <= player.x + 30 &&
-            (allEnemies[i].x + 30) >= (player.x) &&
-            (allEnemies[i].y) <= player.y + 30 &&
-            (allEnemies[i].y + 30) >= (player.y)) {
-            reset();
-            Player.prototype.lives();
-        }
-    }
-    //checks to see if player reaches water and resets player initial position
-    if (player.y <= -25) {
-        reset();
-    }
-}
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
 var enemy1 = new Enemy(-100, 60, 400);
-var enemy2 = new Enemy(-150, 180, 400);
+var enemy2 = new Enemy(-150, 145, 400);
 var enemy3 = new Enemy(-100, 240, 400);
-var enemy4 = new Enemy(-100, 145, 400);
-var allEnemies = [enemy1, enemy2, enemy3, enemy4];
+var allEnemies = [enemy1, enemy2, enemy3];
 
 
 var player = new Player(200, 400, 1);
