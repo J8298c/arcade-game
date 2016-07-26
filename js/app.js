@@ -53,23 +53,23 @@ var Player = function() {
 Player.prototype.update = function(dt) {
     //Default reset location for player
     var reset = function() {
-            player.x = 200;
-            player.y = 400;
+            this.x = 200;
+            this.y = 400;
         }
         //checks for collision between player and enemy
         //if player collides with enemy resets player to default loc
         //also deducts a life from player 
     for (var i = 0; i < allEnemies.length; i++) {
-        if ((allEnemies[i].x) <= player.x + 30 &&
-            (allEnemies[i].x + 30) >= (player.x) &&
-            (allEnemies[i].y) <= player.y + 30 &&
-            (allEnemies[i].y + 30) >= (player.y)) {
+        if ((allEnemies[i].x) <= this.x + 30 &&
+            (allEnemies[i].x + 30) >= (this.x) &&
+            (allEnemies[i].y) <= this.y + 30 &&
+            (allEnemies[i].y + 30) >= (this.y)) {
             reset();
             this.lives();
         }
     }
     //if player reaches water resets player to default location
-    if (player.y <= -25) {
+    if (this.y <= -25) {
         reset();
     }
 };
