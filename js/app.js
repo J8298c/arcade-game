@@ -55,7 +55,7 @@ Player.prototype.update = function(dt) {
     var reset = function() {
             this.x = 200;
             this.y = 400;
-        }
+        }.bind(this);
         //checks for collision between player and enemy
         //if player collides with enemy resets player to default loc
         //also deducts a life from player 
